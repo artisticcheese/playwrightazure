@@ -1,0 +1,11 @@
+services:
+  playwright:
+    image: mcr.microsoft.com/playwright/dotnet:v1.56.0-noble
+    working_dir: /playwright
+    volumes:
+      - ./playwright:/playwright
+    environment:
+      CI: "true"
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ${APPLICATIONINSIGHTS_CONNECTION_STRING}
+    command: >-
+      dotnet test --configuration Release
