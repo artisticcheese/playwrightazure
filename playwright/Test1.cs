@@ -37,15 +37,14 @@ public class Tests : PageTest
 
         try
         {
+
+
             await telemetry.TrackStepAsync("Navigate to ipinfo.io", () => Page.GotoAsync("https://ipinfo.io/"));
-
-            await telemetry.TrackStepAsync("Select 8.8.8.8 quick action", async () =>
-            {
-                await Page.GetByRole(AriaRole.Textbox, new() { Name = "Search any IP data..." }).ClickAsync();
-                await Page.GetByRole(AriaRole.Button, new() { Name = "8.8.8.8" }).ClickAsync();
-            });
-
+            await telemetry.TrackStepAsync("Accept cookies", () => Page.GetByRole(AriaRole.Button, new() { Name = "Accept" }).ClickAsync());
+            await telemetry.TrackStepAsync("Fill search textbox with 8.8.8.8", () => Page.GetByRole(AriaRole.Textbox, new() { Name = "Search any IP data" }).FillAsync("8.8.8.8"));
+            await telemetry.TrackStepAsync("Press Enter to search", () => Page.GetByRole(AriaRole.Textbox, new() { Name = "Search any IP data" }).PressAsync("Enter"));
             await telemetry.TrackStepAsync("Verify expected abuse contact", () => Expect(Page.Locator("#block-summary")).ToContainTextAsync("network-abuse@google.com"));
+
 
             telemetry.TrackSuccess();
         }
